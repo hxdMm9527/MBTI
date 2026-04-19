@@ -1,0 +1,281 @@
+{
+  "name": "MBTI性格测试 MVP PRD",
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-15",
+  "concept": {
+    "description": "一款简洁优雅的在线MBTI性格测试工具，帮助用户在5分钟内了解自己的性格类型。设计风格采用现代极简主义，配合流畅的动画过渡，让测试过程如同一次自我探索的旅程，而非枯燥的问卷。",
+    "targetUsers": ["对自己的性格感兴趣的用户", "求职者", "学生", "希望自我成长的人群"]
+  },
+  "designLanguage": {
+    "aestheticDirection": "高端心理测试平台 + 极简北欧设计，大量留白，柔和渐变，舒适阅读",
+    "colorPalette": {
+      "primary": "#6366F1",
+      "secondary": "#8B5CF6",
+      "accent": "#F59E0B",
+      "background": "#F8FAFC",
+      "surface": "#FFFFFF",
+      "textPrimary": "#1E293B",
+      "textSecondary": "#64748B"
+    },
+    "typography": {
+      "headings": "Inter (700)",
+      "body": "Inter (400, 500)",
+      "scale": [14, 16, 20, 28, 36]
+    },
+    "motionPhilosophy": {
+      "pageTransition": "slide + fade, 300ms ease-out",
+      "optionSelect": "scale 1.02 + border color transition, 200ms",
+      "progressBar": "smooth transition, 400ms ease-out",
+      "resultDisplay": "stagger animation, 100ms delay between items"
+    }
+  },
+  "layout": {
+    "pageFlow": ["Landing", "Test", "Loading", "Result"],
+    "pages": {
+      "landing": {
+        "description": "Landing页面",
+        "elements": {
+          "top": "Logo + 标题",
+          "center": "测试简介卡片 + 开始按钮",
+          "bottom": "简要说明测试时长"
+        }
+      },
+      "test": {
+        "description": "测试页面",
+        "elements": {
+          "top": "进度条 + 当前题号/总题数",
+          "center": "问题卡片（单题显示）",
+          "bottom": "4个选项按钮（2x2网格）"
+        }
+      },
+      "result": {
+        "description": "结果页面",
+        "elements": {
+          "top": "性格类型大字展示 (e.g., INTJ)",
+          "middle": "4个维度的简要说明",
+          "bottom": "分享按钮 + 重新测试"
+        }
+      }
+    }
+  },
+  "features": {
+    "core": [
+      {
+        "id": "4.1",
+        "name": "性格测试题库",
+        "description": "4个维度 x 4题 = 16题，每题4个选项，A/B倾向于前者，C/D倾向于后者",
+        "dimensions": ["E/I (外向/内向)", "S/N (感知)", "T/F (判断)", "J/P (生活态度)"]
+      },
+      {
+        "id": "4.2",
+        "name": "答题逻辑",
+        "description": "逐题显示，不可返回，选中选项后自动进入下一题，进度条实时更新"
+      },
+      {
+        "id": "4.3",
+        "name": "结果计算",
+        "description": "每个维度计算倾向百分比，根据倾向确定最终类型，组合形成16种人格类型"
+      },
+      {
+        "id": "4.4",
+        "name": "结果展示",
+        "description": "16种人格类型的独立介绍页面，每种人格包含类型名称、简介、4个维度详解、适合的职业方向"
+      },
+      {
+        "id": "4.5",
+        "name": "分享功能",
+        "description": "一键复制结果链接，分享到社交平台"
+      }
+    ],
+    "interactionDetails": {
+      "hover": "选项按钮 scale 1.02, shadow加深",
+      "click": "按钮按下效果 + 颜色变化 → 自动跳转",
+      "loading": "1.5秒测试计算动画",
+      "result": "类型字母逐个显示动画"
+    }
+  },
+  "components": {
+    "Button": {
+      "variants": {
+        "primary": "bg-indigo-500, text-white, hover:bg-indigo-600",
+        "secondary": "border-indigo-500, text-indigo-500, hover:bg-primary/10",
+        "disabled": "opacity-50, cursor-not-allowed"
+      }
+    },
+    "ProgressBar": {
+      "height": "8px",
+      "track": "bg-slate-200",
+      "fill": "bg-gradient-to-r from-indigo-500 to-violet-500"
+    },
+    "QuestionCard": {
+      "styles": "bg-white, rounded-2xl, shadow-lg, p-8",
+      "elements": "题号标签 + 问题文本 + 选项网格"
+    },
+    "OptionButton": {
+      "states": ["default", "hover", "selected", "disabled"],
+      "default": "bg-white, border-slate-200",
+      "hover": "border-indigo-300, shadow-md",
+      "selected": "bg-indigo-50, border-indigo-500"
+    },
+    "ResultTypeCard": {
+      "description": "大号类型字母 (e.g., INTJ) + 类型名称，渐变背景 + 人格描述"
+    }
+  },
+  "technical": {
+    "stack": {
+      "framework": "Next.js 14 (App Router)",
+      "styling": "Tailwind CSS",
+      "language": "TypeScript",
+      "animation": "Framer Motion",
+      "font": "Google Fonts (Inter)"
+    },
+    "architecture": {
+      "app": {
+        "page.tsx": "Landing page",
+        "test/page.tsx": "Test page",
+        "result/[type]/page.tsx": "Result page",
+        "history/page.tsx": "测试历史记录 (后续)"
+      },
+      "components": {
+        "ui": "Reusable UI components"
+      },
+      "lib": {
+        "questions.ts": "Question data (支持扩展)",
+        "types.ts": "Type definitions",
+        "calculations.ts": "Result calculation logic",
+        "storage.ts": "测试记录存储 (后续)"
+      }
+    }
+  },
+  "dataModel": {
+    "coreTypes": {
+      "Dimension": ["E", "I", "S", "N", "T", "F", "J", "P"],
+      "DimensionPair": ["E/I", "S/N", "T/F", "J/P"],
+      "PersonalityType": ["INTJ", "INTP", "ENTJ", "ENTP", "INFJ", "INFP", "ENFJ", "ENFP", "ISTJ", "ISFJ", "ESTJ", "ESFJ", "ISTP", "ISFP", "ESTP", "ESFP"]
+    },
+    "interfaces": {
+      "QuestionCategory": {
+        "id": "string - 'mbti', 'bigfive', 'career', etc.",
+        "name": "string - 'MBTI性格测试', '大五人格', '职业倾向'",
+        "description": "string",
+        "version": "string - '1.0', '2.0'",
+        "dimensions": "DimensionDefinition[]",
+        "questionCount": "number"
+      },
+      "DimensionDefinition": {
+        "pair": "DimensionPair",
+        "name": "string - '能量倾向'",
+        "description": "string"
+      },
+      "Question": {
+        "id": "number",
+        "categoryId": "string - 所属分类",
+        "dimension": "DimensionPair",
+        "dimensionAspect": "'first' | 'second' - 偏向哪个维度",
+        "text": "string",
+        "options": "[Option, Option, Option, Option]"
+      },
+      "Option": {
+        "label": "string",
+        "value": "'A' | 'B' | 'C' | 'D'",
+        "weight": "Record<Dimension, number>"
+      },
+      "TestRecord": {
+        "id": "string - UUID",
+        "categoryId": "string - 测试分类",
+        "type": "PersonalityType",
+        "answers": "Record<number, 'A' | 'B' | 'C' | 'D'>",
+        "dimensionScores": "DimensionScore[]",
+        "completedAt": "string - ISO timestamp",
+        "timeSpent": "number - 花费时间(秒)"
+      },
+      "DimensionScore": {
+        "dimension": "DimensionPair",
+        "倾向": "Dimension",
+        "percentage": "number",
+        "score": "number"
+      }
+    }
+  },
+  "questionExpansion": {
+    "mvp": {
+      "structure": "每维度 4题 × 4维度 = 16题",
+      "currentQuestionCount": 16
+    },
+    "futureOptions": {
+      "optionA": {
+        "name": "增加题库深度",
+        "description": "每维度 10题 × 4维度 = 40题（从中随机抽取16题）"
+      },
+      "optionB": {
+        "name": "增加测试维度",
+        "examples": ["大五人格测试 (5个维度)", "职业价值观测试", "情商测试"]
+      },
+      "optionC": {
+        "name": "混合测试",
+        "examples": ["MBTI + 大五人格组合", "性格 + 职业倾向组合"]
+      }
+    },
+    "implementationNotes": [
+      "QuestionCategory 支持多套测试题库",
+      "Question.categoryId 标识题目所属分类",
+      "questions.ts 结构化导出，支持按分类加载",
+      "测试时指定 categoryId，动态计算题目数量"
+    ]
+  },
+  "scope": {
+    "included": [
+      "Landing页面",
+      "16题测试流程（结构化设计，支持扩展）",
+      "进度指示",
+      "结果页面 (16种类型)",
+      "响应式设计",
+      "基础动画"
+    ],
+    "testRecord": {
+      "status": "后续",
+      "goals": [
+        "存储每次测试结果到 localStorage",
+        "支持查看历史测试记录",
+        "支持删除记录",
+        "方便后续增加用户系统"
+      ],
+      "storageSchema": {
+        "records": "TestRecord[]",
+        "settings": "UserSettings"
+      },
+      "userSettings": {
+        "lastTestCategory": "string (optional)",
+        "theme": "'light' | 'dark' (optional)"
+      },
+      "implementationLocation": "lib/storage.ts"
+    },
+    "deferred": [
+      "用户答题数据持久化",
+      "历史测试记录",
+      "详细人格分析报告",
+      "社区功能",
+      "多语言支持",
+      "扩展题库（40题深度测试）",
+      "多套测试题库（大五人格、职业倾向）"
+    ]
+  },
+  "personalityTypes": {
+    "INTJ": "建筑师",
+    "INTP": "逻辑学家",
+    "ENTJ": "指挥官",
+    "ENTP": "辩论家",
+    "INFJ": "提倡者",
+    "INFP": "调停者",
+    "ENFJ": "主人公",
+    "ENFP": "竞选者",
+    "ISTJ": "物流师",
+    "ISFJ": "守卫者",
+    "ESTJ": "总经理",
+    "ESFJ": "执行者",
+    "ISTP": "鉴赏家",
+    "ISFP": "探险家",
+    "ESTP": "企业家",
+    "ESFP": "表演者"
+  }
+}
