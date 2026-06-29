@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useRef, useCallback, useEffect } from 'react';
 import { Question } from '@/lib/types';
@@ -56,10 +56,6 @@ export default function QuestionCard({ question, selectedAnswer, onAnswer, quest
   }, [question.options, onAnswer]);
 
   useEffect(() => {
-    optionRefs.current = optionRefs.current.slice(0, question.options.length);
-  }, [question.options]);
-
-  useEffect(() => {
     const container = containerRef.current;
     container?.focus();
     optionRefs.current[0]?.focus();
@@ -67,15 +63,17 @@ export default function QuestionCard({ question, selectedAnswer, onAnswer, quest
 
   return (
     <div
-      ref={(el) => { containerRef.current = el; questionRef && ('current' in questionRef ? questionRef.current = el : null); }}
+      ref={(el) => {
+        containerRef.current = el;
+        if (questionRef) questionRef.current = el;
+      }}
       className="bg-white rounded-2xl shadow-xl p-8"
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
       <div className="mb-6">
         <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-          第 {question.id} 题
-        </span>
+          绗?{question.id} 棰?        </span>
       </div>
       <h2 className="text-xl font-semibold text-slate-800 mb-8" tabIndex={-1}>
         {question.text}
@@ -83,7 +81,7 @@ export default function QuestionCard({ question, selectedAnswer, onAnswer, quest
       <div
         className="grid grid-cols-1 gap-4"
         role="listbox"
-        aria-label="请选择最符合你的选项"
+        aria-label="璇烽€夋嫨鏈€绗﹀悎浣犵殑閫夐」"
       >
         {question.options.map((option, index) => (
           <OptionButton
@@ -94,7 +92,6 @@ export default function QuestionCard({ question, selectedAnswer, onAnswer, quest
             isSelected={selectedAnswer === option.value}
             onClick={onAnswer}
             tabIndex={-1}
-            dataOptionIndex={index}
           />
         ))}
       </div>

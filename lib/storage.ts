@@ -1,11 +1,16 @@
-import { TestRecord, PersonalityType } from './types';
+﻿import { TestRecord, PersonalityType } from './types';
 
 const STORAGE_KEY = 'mbti_test_records';
 
 export function getTestRecords(): TestRecord[] {
   if (typeof window === 'undefined') return [];
-  const stored = localStorage.getItem(STORAGE_KEY);
-  return stored ? JSON.parse(stored) : [];
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    localStorage.removeItem(STORAGE_KEY);
+    return [];
+  }
 }
 
 export function saveTestRecord(record: TestRecord): void {

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -66,7 +66,7 @@ export function useTestFlow(questions: Question[]): UseTestFlowReturn {
           completedAt: new Date().toISOString()
         }));
         saveTestRecord({
-          id: Date.now().toString(),
+          id: crypto.randomUUID(),
           categoryId: 'mbti',
           type: result,
           answers: newAnswers,

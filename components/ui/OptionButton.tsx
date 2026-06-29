@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { forwardRef } from 'react';
 import { motion } from 'framer-motion';
@@ -8,25 +8,21 @@ interface OptionButtonProps {
   value: 'A' | 'B' | 'C' | 'D';
   isSelected: boolean;
   onClick: (value: 'A' | 'B' | 'C' | 'D') => void;
-  onKeyDown?: (e: React.KeyboardEvent) => void;
   tabIndex?: number;
-  dataOptionIndex?: number;
 }
 
 const OptionButton = forwardRef<HTMLButtonElement, OptionButtonProps>(
-  ({ label, value, isSelected, onClick, onKeyDown, tabIndex = 0, dataOptionIndex }: OptionButtonProps, ref) => {
+  ({ label, value, isSelected, onClick, tabIndex = 0 }: OptionButtonProps, ref) => {
     return (
       <motion.button
         ref={ref}
         tabIndex={tabIndex}
-        data-option-index={dataOptionIndex}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => onClick(value)}
-        onKeyDown={onKeyDown}
         className={`
           w-full p-4 text-left rounded-xl border-2 transition-all duration-200
           ${isSelected
