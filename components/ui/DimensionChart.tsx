@@ -2,31 +2,15 @@
 
 import { motion } from 'framer-motion';
 import { DimensionScore } from '@/lib/types';
+import { getDimensionLabels } from '@/lib/questions';
 
 interface DimensionChartProps {
   scores: DimensionScore[];
 }
 
-const dimensionLabels: Record<string, { first: { label: string; desc: string }; second: { label: string; desc: string } }> = {
-  'E/I': {
-    first: { label: '内向 I', desc: '从内心世界获得能量，喜欢独处和深度思考' },
-    second: { label: '外向 E', desc: '从外部世界获得能量，喜欢社交和交流' }
-  },
-  'S/N': {
-    first: { label: '感觉 S', desc: '关注具体事实和实际细节' },
-    second: { label: '直觉 N', desc: '关注可能性和整体模式' }
-  },
-  'T/F': {
-    first: { label: '思考 T', desc: '基于逻辑和客观分析做决定' },
-    second: { label: '情感 F', desc: '基于价值观和他人感受做决定' }
-  },
-  'J/P': {
-    first: { label: '判断 J', desc: '喜欢有计划和有组织的生活方式' },
-    second: { label: '知觉 P', desc: '喜欢灵活和自发的适应方式' }
-  }
-};
-
 export default function DimensionChart({ scores }: DimensionChartProps) {
+  const dimensionLabels = getDimensionLabels();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -38,7 +22,7 @@ export default function DimensionChart({ scores }: DimensionChartProps) {
       <div className="space-y-6">
         {scores.map((score, index) => {
           const labels = dimensionLabels[score.dimension];
-          const isFirst = score.倾向 === score.dimension.split('/')[0];
+          const isFirst = score.leaning === score.dimension.split('/')[0];
           const percentage = isFirst ? score.percentage : 100 - score.percentage;
 
           return (
@@ -53,7 +37,7 @@ export default function DimensionChart({ scores }: DimensionChartProps) {
                   {labels.first.label} ←→ {labels.second.label}
                 </span>
                 <span className="text-sm font-bold text-primary">
-                  {score.倾向} {score.percentage}%
+                  {score.leaning} {score.percentage}%
                 </span>
               </div>
               <div className="relative h-3 rounded-full bg-gradient-to-r from-primary via-purple-500 to-secondary">

@@ -93,7 +93,7 @@ export default function HistoryPage() {
                 <div className="mt-4 flex flex-wrap gap-2">
                   {record.dimensionScores.map((score) => (
                     <span key={score.dimension} className="text-xs px-2 py-1 bg-slate-100 rounded-full text-slate-600">
-                      {score.dimension}: {score.倾向}{score.percentage}%
+                      {score.dimension}: {score.leaning}{score.percentage}%
                     </span>
                   ))}
                 </div>

@@ -1,79 +1,27 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import QuestionCard from '@/components/ui/QuestionCard';
 import ProgressBar from '@/components/ui/ProgressBar';
 import { questions } from '@/lib/questions';
-import { calculateResult, getDimensionResults } from '@/lib/calculations';
-import { saveTestRecord } from '@/lib/storage';
+import { useTestFlow } from '@/hooks/useTestFlow';
 
 export default function TestPage() {
-  const router = useRouter();
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<Record<number, 'A' | 'B' | 'C' | 'D'>>({});
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [direction, setDirection] = useState(1);
+  const {
+    currentQuestion,
+    answers,
+    isTransitioning,
+    direction,
+    question,
+    progress,
+    canGoBack,
+    handleAnswer,
+    handlePrevQuestion
+  } = useTestFlow(questions);
+
   const questionRef = useRef<HTMLDivElement>(null);
-
   const prefersReducedMotion = useReducedMotion();
-
-  const question = questions[currentQuestion];
-  const progress = ((currentQuestion + 1) / questions.length) * 100;
-  const canGoBack = currentQuestion > 0;
-
-  useEffect(() => {
-    if (!prefersReducedMotion && questionRef.current) {
-      questionRef.current.focus();
-    }
-    const firstOption = document.querySelector('[data-option-index="0"]') as HTMLButtonElement | null;
-    firstOption?.focus();
-  }, [currentQuestion, prefersReducedMotion]);
-
-  const handlePrevQuestion = () => {
-    if (currentQuestion > 0) {
-      setDirection(-1);
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrentQuestion(currentQuestion - 1);
-        setIsTransitioning(false);
-      }, prefersReducedMotion ? 0 : 150);
-    }
-  };
-
-  const handleAnswer = (answer: 'A' | 'B' | 'C' | 'D') => {
-    const newAnswers = { ...answers, [question.id]: answer };
-    setAnswers(newAnswers);
-    setIsTransitioning(true);
-    setDirection(1);
-
-    setTimeout(() => {
-      if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
-      } else {
-        const result = calculateResult(newAnswers, questions);
-        const dimensionScores = getDimensionResults(newAnswers, questions);
-        localStorage.setItem('mbti_last_result', JSON.stringify({
-          type: result,
-          answers: newAnswers,
-          dimensionScores,
-          completedAt: new Date().toISOString()
-        }));
-        saveTestRecord({
-          id: Date.now().toString(),
-          categoryId: 'mbti',
-          type: result,
-          answers: newAnswers,
-          dimensionScores,
-          completedAt: new Date().toISOString(),
-          timeSpent: 0
-        });
-        router.push(`/result/${result}`);
-      }
-      setIsTransitioning(false);
-    }, prefersReducedMotion ? 0 : 300);
-  };
 
   return (
     <div className="min-h-screen px-4 py-8">

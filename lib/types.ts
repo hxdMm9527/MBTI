@@ -29,21 +29,20 @@ export interface QuestionCategory {
 export interface Option {
   label: string;
   value: 'A' | 'B' | 'C' | 'D';
-  weight: Record<Dimension, number>;
+  weight: Partial<Record<Dimension, number>>;
 }
 
 export interface Question {
   id: number;
   categoryId: string;
   dimension: DimensionPair;
-  dimensionAspect: 'first' | 'second';
   text: string;
   options: Option[];
 }
 
 export interface DimensionScore {
   dimension: DimensionPair;
-  倾向: Dimension;
+  leaning: Dimension;
   percentage: number;
   score: number;
 }

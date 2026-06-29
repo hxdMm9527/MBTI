@@ -12,7 +12,7 @@ import DimensionChart from '@/components/ui/DimensionChart';
 export default function ResultPage() {
   const params = useParams();
   const router = useRouter();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
   const [dimensionScores, setDimensionScores] = useState<DimensionScore[]>([]);
 
   const type = params.type as PersonalityType;
@@ -28,10 +28,15 @@ export default function ResultPage() {
     if (stored) {
       const data = JSON.parse(stored);
       if (data.dimensionScores) {
-        setDimensionScores(data.dimensionScores);
+        // backward compat: normalize old tendency field
+        const normalized = data.dimensionScores.map((s: Record<string, unknown>) => ({
+          ...s,
+          leaning: s.leaning ?? s["倾向"]
+        }));
+        setDimensionScores(normalized);
       }
     }
-    setTimeout(() => setIsLoaded(true), 1500);
+    
   }, []);
 
   const handleShare = async () => {
